@@ -4,11 +4,11 @@ Classify **Obstructive Sleep Apnea Syndrome (OSAS)** obstruction sites — **pal
  
 ---
  
-## 📌 Overview
+## Overview
  
 This repository provides an end-to-end machine learning pipeline that extracts acoustic metrics from snoring recordings and trains classifiers (SVM, MLP) to distinguish the anatomical site of airway obstruction. The pipeline is based on a  **Nested Cross-Validation** scheme.
  
-## ⚠️ Data Requirements
+## Data Requirements
  
 The pipeline requires input audio/video that has been **manually cleaned** beforehand:
  
@@ -34,7 +34,7 @@ Audio files should be stored in stereo format into folders, where every folder i
  
 ---
  
-## 🚀 Pipeline
+## Pipeline
  
 The pipeline is split into sequential scripts prefixed with `Run`. Run them in order.
  
@@ -74,7 +74,7 @@ python Run10_AcoustiFeaturesAnalysis.py
  
 ---
  
-## 🧩 Custom Modules
+## Custom Modules
  
 The repository relies on custom modules.
  
