@@ -404,7 +404,8 @@ def _compute_advanced(y, sr, f0=None):
             features["cpp"] = float(peak_val - baseline_at_peak)
         else:
             features["cpp"] = 0.0
-    except:
+    except Exception as e:
+        print(f"    ! CPP extraction failed: {e}")
         features["cpp"] = 0.0
 
     # 4. Autocorrelation Periodicity
@@ -430,7 +431,8 @@ def _compute_advanced(y, sr, f0=None):
         features["acf_peak_to_mean"] = float(peak_val / (np.mean(acf_nozero) + 1e-9))
         features["acf_peak_to_std"] = float(peak_val / (np.std(acf_nozero) + 1e-9))
         features.update(summarize_vector(acf_nozero, "acf"))
-    except:
+    except Exception as e:
+        print(f"    ! Autocorrelation extraction failed: {e}")
         features["acf_peak_value"] = 0.0
         
     return features

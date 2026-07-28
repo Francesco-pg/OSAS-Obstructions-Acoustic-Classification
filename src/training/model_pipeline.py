@@ -90,7 +90,10 @@ def prepare_split(df):
     elif 'id' in df.columns: 
         pass
 
-    if df['y'].dtype == 'object' or df['y'].dtype.name == 'category':
+    # Map class names to integers whenever y is not already numeric. Using
+    # is_numeric_dtype (rather than == 'object') also covers pandas' string and
+    # categorical dtypes, so this holds under pandas 2.x and 3.x alike.
+    if not pd.api.types.is_numeric_dtype(df['y']):
         df['y'] = df['y'].astype(str).str.lower().str.strip()
         mapping = {"epiglottide": 1, "non epiglottide": 0, "palato": 0, "nonepiglottide": 0}
         df['y'] = df['y'].map(mapping)
@@ -186,10 +189,12 @@ def evaluate_model(model, X_test, y_test, target_names):
         proba = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else np.zeros(len(y_test))
         
     bal_acc = balanced_accuracy_score(y_test, pred)
-    try: 
+    try:
         roc_auc = roc_auc_score(y_test, proba)
-    except: 
-        roc_auc = 0.0
+    except Exception:
+        # Undefined AUC (e.g. a single class present) -> chance level,
+        # consistent with the aggregation in Run06_AggregateResults.
+        roc_auc = 0.5
         
     print(classification_report(y_test, pred, target_names=target_names))
     print(f"Balanced Acc: {bal_acc:.4f}")

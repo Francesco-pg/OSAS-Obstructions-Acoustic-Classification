@@ -77,7 +77,7 @@ MODELS = {
             {
                 "clf__kernel": ["rbf"],
                 "clf__C": [0.01, 0.1, 1, 10, 50, 100, 150, 200], 
-                "clf__gamma": ["scale", 0.01, 0.01, 0.1, 1],
+                "clf__gamma": ["scale", 0.01, 0.1, 1],
                 "clf__class_weight": [None] 
             },
             {

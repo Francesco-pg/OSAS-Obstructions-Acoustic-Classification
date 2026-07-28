@@ -71,7 +71,7 @@ def plot_mean_roc(mean_fpr, tprs_interp, fold_roc_data, target_model, output_pat
             color='grey', alpha=0.2, label=r'$\pm$ 1 std. dev.'
         )
 
-    plt.plot(mean_fpr, mean_tpr, color='blue', lw=3, label=f'Mean ROC (AUC = {mean_auc_val:.3f} $\pm$ {std_auc_val:.3f})')
+    plt.plot(mean_fpr, mean_tpr, color='blue', lw=3, label=rf'Mean ROC (AUC = {mean_auc_val:.3f} $\pm$ {std_auc_val:.3f})')
     plt.plot([0, 1], [0, 1], 'r--', lw=2)
     plt.xlabel('False Positive Rate (1 - Specificity)', fontweight='bold')
     plt.ylabel('True Positive Rate (Sensitivity)', fontweight='bold')

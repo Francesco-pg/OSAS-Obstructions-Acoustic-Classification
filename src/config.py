@@ -10,7 +10,18 @@ Created:     2026-02-25
 """
 
 import os
+import sys
 from pathlib import Path
+
+# The pipeline prints emoji in its status messages. On Windows consoles that
+# default to a legacy code page (cp1252) that raises UnicodeEncodeError, which
+# would abort a run mid-way. Force UTF-8 output (config is imported by every
+# Run* script). This is a no-op where stdout is already UTF-8.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 ### --- PATHS AND NAMES --- ###
 

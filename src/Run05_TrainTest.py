@@ -136,11 +136,12 @@ def main():
             step                 = m_cfg.RFE_STEP
         )
         
+        # Both 'sample' and 'class' strategies yield a per-sample weight vector
+        # (see model_pipeline.calculate_weights). RFE routes fit params to its
+        # estimator, which expects `sample_weight` — never `class_weight`.
         rfe_fit_params = {}
-        if m_cfg.WEIGHTING_STRATEGY == 'sample':
+        if sample_weight is not None:
             rfe_fit_params["sample_weight"] = sample_weight
-        elif m_cfg.WEIGHTING_STRATEGY == 'class':
-            rfe_fit_params["class_weight"]  = sample_weight
 
         selector.fit(X_rfe_input, y_train, **rfe_fit_params)
         top_k_features = X_pruned.columns[selector.support_].tolist()
@@ -196,21 +197,19 @@ def main():
                 verbose=1
             )
             
-            fit_kwargs = {} 
-            if m_cfg.WEIGHTING_STRATEGY == 'sample':
+            # Both weighting strategies produce a per-sample weight vector.
+            # SVM accepts it directly via fit; MLP.fit exposes no sample_weight
+            # through GridSearchCV, so the weighting is expressed by oversampling
+            # (groups are carried along so subject blocks stay intact).
+            fit_kwargs = {}
+            if sample_weight is not None:
                 if model_name in ["SVM", "ADA"]:
-                    fit_kwargs["clf__sample_weight"] = sample_weight 
+                    fit_kwargs["clf__sample_weight"] = sample_weight
                 elif model_name == "MLP":
                     X_train_run['temp_groups'] = groups_run
                     ros = RandomOverSampler(random_state=m_cfg.RANDOM_STATE)
                     X_train_run, y_train_run = ros.fit_resample(X_train_run, y_train_run)
                     groups_run = X_train_run.pop('temp_groups').values
-            
-            elif m_cfg.WEIGHTING_STRATEGY == 'class' and model_name == "MLP":
-                X_train_run['temp_groups'] = groups_run
-                ros = RandomOverSampler(random_state=m_cfg.RANDOM_STATE)
-                X_train_run, y_train_run = ros.fit_resample(X_train_run, y_train_run)
-                groups_run = X_train_run.pop('temp_groups').values
 
             # Fit Model
             start_time = time.time()
