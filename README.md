@@ -117,3 +117,14 @@ Helper scripts:
 - **Feature selection:** `rfe_scores_fold_XX.csv`, feature rankings
 - **Results:** per-fold `.txt`, `GLOBAL_RESULTS_[...].txt`
 - **Plots:** confusion matrices, ROC curves, hyperparameter grids, biomarker radar charts
+---
+ 
+## 👥 Authors
+ 
+This project was developed by:
+ 
+- **Francesco Pietrogiacomi** — [@Francesco-pg](https://github.com/Francesco-pg)
+- **Linda Fiorini** — [@LindaFiorini](https://github.com/LindaFiorini)
+- **Emanuele Agrimi** — [@Emaagr](https://github.com/Emaagr)
+ 
+For questions about the pipeline, please open an [issue](../../issues).
